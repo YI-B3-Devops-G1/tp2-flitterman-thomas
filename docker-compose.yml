@@ -1,0 +1,37 @@
+version: '3'
+services:
+    db_postgres:
+        image: postgres:12
+        container_name: db
+        environment:
+            POSTGRES_USER: tp2_user
+            POSTGRES_PASSWORD: tp2_password
+            POSTGRES_DB: tp2
+        ports:
+            - 5432:5432
+        volumes:
+            - ./postgres-data:/var/lib/postgresql/data
+    db_redis:
+        image: redis:5.0.7-alpine
+        container_name: redis
+        ports:
+            - 6379:6379
+    app:
+        image: node:12
+        container_name: app
+        hostname: app
+        volumes:
+            - ./app:/usr/src/app
+        working_dir: /usr/src/app
+        command: npm run dev
+        ports:
+            - 3030:3030
+        depends_on:
+            - db_postgres
+    reverse_proxy:
+        build: .
+        container_name: reverse_proxy
+        ports:
+            - 3000:3000
+        depends_on:
+            - app

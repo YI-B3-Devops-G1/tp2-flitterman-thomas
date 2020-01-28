@@ -1,0 +1,8 @@
+{
+    "username": "tp2_user",
+    "password": "tp2_password",
+    "database": "tp2",
+    "host": "db",
+    "port": 5432,
+    "redisHost": "redis"
+}
